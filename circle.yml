@@ -1,0 +1,23 @@
+machine:
+  services:
+    - docker
+dependencies:
+  override:
+    - docker info
+    - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+    - make build
+
+test:
+  override:
+    - make test
+
+deployment:
+  latest:
+    branch: master
+    commands:
+      - make push_latest
+
+  release:
+    tag: /.*/
+    commands:
+      - make push_release_tag
