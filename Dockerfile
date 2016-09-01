@@ -2,12 +2,13 @@
 # any Go projects at Vungle.
 #
 # Tag: vungle/golang[:<go-semver>]; e.g. vungle/golang:1.5, vungle/golang:1.5.2.
-FROM golang:1.6-alpine
+FROM golang:1.7-alpine
 
 RUN apk add -q --update \
     && apk add -q \
             bash \
             git \
+            curl \
     && rm -rf /var/cache/apk/*
 
 # OUTDIR specifies a directory in which projects can create output files so that
@@ -15,7 +16,6 @@ RUN apk add -q --update \
 # choose to mount OUTDIR to a volume directly or create a directory and perform
 # `docker cp ...` later.
 ENV OUTDIR /out
-ENV GO15VENDOREXPERIMENT 1
 
 ##########################
 # Testing and Tooling
@@ -36,7 +36,7 @@ RUN go get -u \
         github.com/golang/lint/golint \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
-ENV GLIDE_VERSION 0.10.2
+ENV GLIDE_VERSION v0.12.1
 
 ##########################
 # Dependency Management
