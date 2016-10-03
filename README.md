@@ -1,8 +1,8 @@
-[![Circle CI](https://circleci.com/gh/Vungle/docker-golang/tree/master.svg?style=svg)](https://circleci.com/gh/Vungle/docker-golang/tree/master)
+[![Build Status](https://travis-ci.org/Vungle/docker-golang.svg?branch=master)](https://travis-ci.org/Vungle/docker-golang)
 
 # docker-golang
 
-Dockerized golang image using alpine linux
+Vungle's unified Go SDK for development and CI.
 
 ## Builds
 
