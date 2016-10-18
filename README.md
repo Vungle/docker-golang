@@ -4,6 +4,8 @@
 
 Vungle's unified Go SDK for development and CI.
 
+    docker run --rm vungle/golang:1 go version
+
 ## Builds
 
 Builds are automatically pushed to docker hub via circleci as you commit.
