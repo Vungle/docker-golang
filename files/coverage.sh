@@ -10,8 +10,16 @@ if [ -z "$OUTDIR" ]; then
   exit 1
 fi
 
+# grep_ignore is the expression which will inversely grepped for the Go packages
+# to be tested. E.g., "vendor", or "vendor|cmd\/integration".
+grep_ignore=$1
+
+if [ -z "$grep_ignore" ]; then
+  grep_ignore="vendor"
+fi
+
 profiles=()
-for package in $(go list ./... | egrep -v "vendor"); do
+for package in $(go list ./... | egrep -v "${grep_ignore}"); do
   # Normalize package name to file name.
   filename=$OUTDIR/$(echo "$package-cover.out" | sed "s/\//-/g")
 
