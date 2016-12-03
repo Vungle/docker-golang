@@ -1,0 +1,14 @@
+---
+sudo: required
+services:
+  - docker
+
+before_script:
+ - pwd
+
+script:
+  - make build test
+
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  # Figure out automatic Git tagging and Docker push - make publish PROJECT_IAMGE=??
