@@ -1,0 +1,21 @@
+---
+sudo: required
+services:
+  - docker
+
+language: go
+
+before_script:
+ - pwd
+
+script:
+  - make build test
+
+after_success:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    branch: master
