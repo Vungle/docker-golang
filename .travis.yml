@@ -11,4 +11,9 @@ script:
 
 after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-  # Figure out automatic Git tagging and Docker push - make publish PROJECT_IAMGE=??
+
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    branch: master

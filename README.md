@@ -2,14 +2,23 @@
 
 # docker-golang
 
-Vungle's unified Go SDK for development and CI.
+Vungle's unified Go SDK for development and continuous integration.
 
     docker run --rm vungle/golang:1 go version
 
 ## Builds
 
-Builds are automatically pushed to docker hub via circleci as you commit.
+Docker image can be built with:
 
-* master branch -> latest tag
-* creating a release tag will also create a corresoponding image tag
+    make build
 
+Then tested with:
+
+    make test
+
+We're using Travis-CI to continuously deploying on commits to master branch. Make sure changes
+passes `make build test` command.
+
+### Future improvements
+
+- Integration other go projects in this repo as dependency breakage.
