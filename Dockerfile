@@ -25,11 +25,12 @@ RUN go get -u \
         github.com/t-yuki/gocover-cobertura \
         github.com/wadey/gocovmerge \
 
-        # Code analysis tool: golint.
+        # Code analysis tools: golint, goimports.
         github.com/golang/lint/golint \
+        golang.org/x/tools/cmd/goimports \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
-ENV GLIDE_VERSION v0.12.2
+ENV GLIDE_VERSION v0.12.3
 
 ##########################
 # Dependency Management
