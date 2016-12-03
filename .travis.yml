@@ -11,11 +11,11 @@ before_script:
 script:
   - make build test
 
-after_success:
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+before_deploy:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 deploy:
   provider: script
-  script: scripts/deploy.sh
+  script: ./deploy.sh
   on:
     branch: master
