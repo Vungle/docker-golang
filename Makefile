@@ -21,20 +21,14 @@ build:
 test:
 	@echo "Testing standard image..."
 	docker run --rm \
-	$(PROJECT_IMAGE) \
-	go version | grep $$(cat .version)
-	docker run --rm \
 	-v `pwd`/test:/var/test \
 	$(PROJECT_IMAGE) \
-	go run /var/test/mustcompile/mustcompile.go
+	go run /var/test/mustcompile/mustcompile.go -version="$$(cat .version)"
 	@echo "Testing alpine image..."
 	docker run --rm \
-	$(PROJECT_IMAGE)-alpine \
-	go version | grep $$(cat .version)
-	docker run --rm \
 	-v `pwd`/test:/var/test \
 	$(PROJECT_IMAGE)-alpine \
-	go run /var/test/mustcompile/mustcompile.go
+	go run /var/test/mustcompile/mustcompile.go -version="$$(cat .version)"
 
 publish:
 	@docker push $(PROJECT_IMAGE)
