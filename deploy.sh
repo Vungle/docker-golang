@@ -1,6 +1,5 @@
 #!/bin/sh -ex
 ver=`cat .version`
-
 minorver=`echo ${ver} | awk -F \. '{ print $1"."$2 }'`
 majorver=`echo ${ver} | awk -F \. '{ print $1 }'`
 make build PROJECT_IMAGE=vungle/golang:${ver}
