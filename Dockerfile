@@ -2,7 +2,7 @@
 # any Go projects at Vungle.
 #
 # Tag: vungle/golang[:<go-semver>]; e.g. vungle/golang:1.5, vungle/golang:1.5.2.
-FROM golang:1.8.3
+FROM golang:1.9.0
 
 # OUTDIR specifies a directory in which projects can create output files so that
 # these output files can be consumed by other processes. Downstream projects can
@@ -28,6 +28,9 @@ RUN go get -u \
         # Code analysis tools: golint, goimports.
         github.com/golang/lint/golint \
         golang.org/x/tools/cmd/goimports \
+
+        # Semi-official dependency management.
+        github.com/golang/dep \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
 ENV GLIDE_VERSION v0.12.3
