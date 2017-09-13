@@ -30,7 +30,7 @@ RUN go get -u \
         golang.org/x/tools/cmd/goimports \
 
         # Semi-official dependency management.
-        github.com/golang/dep \
+        github.com/golang/dep/cmd/dep \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
 ENV GLIDE_VERSION v0.12.3
