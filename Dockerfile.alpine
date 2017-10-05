@@ -2,7 +2,7 @@
 # any Go projects at Vungle.
 #
 # Tag: vungle/golang[:<go-semver>-alpine]; e.g. vungle/golang:1.5-alpine, vungle/golang:1.5.2-alpine.
-FROM golang:1.9.0-alpine
+FROM golang:1.9.1-alpine
 
 RUN apk add -q --update \
     && apk add -q \
@@ -27,15 +27,12 @@ ENV OUTDIR /out
 RUN go get -u \
         # Unit test report generation.
         github.com/jstemmer/go-junit-report \
-
         # Coverage report generation.
         github.com/t-yuki/gocover-cobertura \
         github.com/wadey/gocovmerge \
-
         # Code analysis tool: golint.
         github.com/golang/lint/golint \
         golang.org/x/tools/cmd/goimports \
-
         # Semi-official dependency management.
         github.com/golang/dep/cmd/dep \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
