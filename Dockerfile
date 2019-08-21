@@ -2,7 +2,7 @@
 # any Go projects at Vungle.
 #
 # Tag: vungle/golang[:<go-semver>]; e.g. vungle/golang:1.5, vungle/golang:1.5.2.
-FROM golang:1.11.13
+FROM golang:1.12.9
 
 # OUTDIR specifies a directory in which projects can create output files so that
 # these output files can be consumed by other processes. Downstream projects can
@@ -21,7 +21,7 @@ RUN go get -u \
         github.com/jstemmer/go-junit-report \
         github.com/t-yuki/gocover-cobertura \
         github.com/wadey/gocovmerge \
-        github.com/golang/lint/golint \
+        golang.org/x/lint/golint \
         golang.org/x/tools/cmd/goimports \
         github.com/golang/dep/cmd/dep \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
