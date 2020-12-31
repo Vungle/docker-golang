@@ -7,12 +7,10 @@ language: go
 
 before_script:
  - pwd
+ - docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 script:
   - make build test
-
-before_deploy:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
 
 deploy:
   provider: script
