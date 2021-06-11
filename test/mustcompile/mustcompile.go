@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"os/exec"
 	"runtime"
 	"strings"
 )
@@ -22,10 +21,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if err := verifyInstalledTools(); err != nil {
-		log.Fatal(err)
-	}
-
 	fmt.Println("Pass!")
 }
 
@@ -40,11 +35,4 @@ func verifyGoVersion(version string) error {
 	}
 
 	return nil
-}
-
-func verifyInstalledTools() error {
-	// Check `dep version`
-	cmd := exec.Command("dep", "version")
-	_, err := cmd.Output()
-	return err
 }
