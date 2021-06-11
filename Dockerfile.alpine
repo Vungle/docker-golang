@@ -30,7 +30,6 @@ RUN go get -u \
         github.com/wadey/gocovmerge \
         golang.org/x/lint/golint \
         golang.org/x/tools/cmd/goimports \
-        github.com/golang/dep/cmd/dep \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
 ENV GLIDE_VERSION v0.12.1
