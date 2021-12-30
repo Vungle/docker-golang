@@ -12,14 +12,19 @@ fi
 
 # grep_ignore is the expression which will inversely grepped for the Go packages
 # to be tested. E.g., "vendor", or "vendor|cmd\/integration".
-grep_ignore=$1
+ignore_package=$1
+ignore_file=$2
 
-if [ -z "$grep_ignore" ]; then
-  grep_ignore="vendor"
+if [ -z "$ignore_package" ]; then
+  ignore_package="vendor"
+fi
+
+if [ -z "$ignore_file" ]; then
+  ignore_file="vendor"
 fi
 
 profiles=()
-for package in $(go list ./... | egrep -v "${grep_ignore}"); do
+for package in $(go list ./... | egrep -v "${ignore_package}"); do
   # Normalize package name to file name.
   filename=$OUTDIR/$(echo "$package-cover.out" | sed "s/\//-/g")
 
@@ -32,7 +37,7 @@ for package in $(go list ./... | egrep -v "${grep_ignore}"); do
 done
 
 # Combine all inidividual cover profiles into one.
-gocovmerge ${profiles[@]} > $OUTDIR/coverall.out
+gocovmerge ${profiles[@]} | egrep -v "${ignore_file}" > $OUTDIR/coverall.out
 echo "${profiles[@]} " > $OUTDIR/tested.log
 rm ${profiles[@]}
 
