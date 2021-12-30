@@ -2,7 +2,7 @@
 # any Go projects at Vungle.
 #
 # Tag: vungle/golang[:<go-semver>-alpine]; e.g. vungle/golang:1.5-alpine, vungle/golang:1.5.2-alpine.
-FROM golang:1.17.1-alpine
+FROM golang:1.17.5-alpine
 
 RUN apk add -q --update \
     && apk add -q \
@@ -32,18 +32,9 @@ RUN go get -u \
         golang.org/x/tools/cmd/goimports \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
-ENV GLIDE_VERSION v0.12.1
-
 ##########################
 # Dependency Management
 ##########################
-# Install Glide.
-RUN mkdir -p /tmp && cd /tmp \
-    && curl -fsSL https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz \
-            -o glide.tar.gz \
-    && tar -xzf glide.tar.gz \
-    && mv linux-amd64/glide /usr/local/bin/glide \
-    && rm -rf /tmp/*
 
 # TODO: Benchmark report tools.
 

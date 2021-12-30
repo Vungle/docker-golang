@@ -2,7 +2,7 @@
 # any Go projects at Vungle.
 #
 # Tag: vungle/golang[:<go-semver>]; e.g. vungle/golang:1.5, vungle/golang:1.5.2.
-FROM golang:1.17.1
+FROM golang:1.17.5
 
 # OUTDIR specifies a directory in which projects can create output files so that
 # these output files can be consumed by other processes. Downstream projects can
@@ -25,18 +25,9 @@ RUN go get -u \
         golang.org/x/tools/cmd/goimports \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
-ENV GLIDE_VERSION v0.12.3
-
 ##########################
 # Dependency Management
 ##########################
-# Install Glide.
-RUN mkdir -p /tmp && cd /tmp \
-    && curl -fsSL https://github.com/Masterminds/glide/releases/download/$GLIDE_VERSION/glide-$GLIDE_VERSION-linux-amd64.tar.gz \
-            -o glide.tar.gz \
-    && tar -xzf glide.tar.gz \
-    && mv linux-amd64/glide /usr/local/bin/glide \
-    && rm -rf /tmp/*
 
 # TODO: Benchmark report tools.
 
