@@ -9,4 +9,4 @@ docker tag vungle/golang:${ver}-alpine vungle/golang:${minorver}-alpine
 docker tag vungle/golang:${ver}-alpine vungle/golang:${majorver}-alpine
 
 docker info
-docker push vungle/golang
+docker push --all-tags vungle/golang
