@@ -17,12 +17,12 @@ ENV OUTDIR /out
 # want to only retain its binaries to avoid unexpected source dependencies bleed
 # into the project source code.
 ##########################
-RUN go get -u \
-        github.com/jstemmer/go-junit-report \
-        github.com/t-yuki/gocover-cobertura \
-        github.com/wadey/gocovmerge \
-        golang.org/x/lint/golint \
-        golang.org/x/tools/cmd/goimports \
+RUN go install \
+        github.com/jstemmer/go-junit-report@latest \
+        github.com/t-yuki/gocover-cobertura@latest \
+        github.com/wadey/gocovmerge@latest \
+        golang.org/x/lint/golint@latest \
+        golang.org/x/tools/cmd/goimports@latest \
     && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
 ##########################
