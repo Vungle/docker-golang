@@ -18,12 +18,15 @@ ENV OUTDIR /out
 # into the project source code.
 ##########################
 RUN go install \
-        github.com/jstemmer/go-junit-report@latest \
-        github.com/t-yuki/gocover-cobertura@latest \
-        github.com/wadey/gocovmerge@latest \
-        golang.org/x/lint/golint@latest \
-        golang.org/x/tools/cmd/goimports@latest \
-    && rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
+        github.com/jstemmer/go-junit-report@latest
+RUN go install \
+        github.com/t-yuki/gocover-cobertura@latest
+RUN go install \
+        github.com/wadey/gocovmerge@latest
+RUN go install \
+        golang.org/x/lint/golint@latest
+RUN go install \
+        golang.org/x/tools/cmd/goimports@latest
 
 ##########################
 # Dependency Management
