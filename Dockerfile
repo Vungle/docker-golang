@@ -26,7 +26,7 @@ RUN go install \
 RUN go install \
         golang.org/x/lint/golint@latest
 RUN go install \
-        golang.org/x/tools/cmd/goimports@latest \
+        golang.org/x/tools/cmd/goimports@latest
 RUN rm -rf $GOPATH/src/* && rm -rf $GOPATH/pkg/*
 
 ##########################
