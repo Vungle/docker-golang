@@ -20,6 +20,7 @@ build-native:
 	$(BUILD_OPTS) \
 	-t $(PROJECT_IMAGE)-alpine \
 	-f Dockerfile.alpine \
+	.
 
 build-multiarch: _prepare-multiarch
 	@echo "Build multiarch options: $(BUILD_OPTS)"
