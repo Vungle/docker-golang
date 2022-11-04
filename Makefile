@@ -60,4 +60,4 @@ publish:
 # Helper rules #
 ################
 _prepare-multiarch:
-	docker buildx ls | grep 'Driver:' | grep 'docker-container' > /dev/null || { docker buildx create --use --name multiarch-builder; docker buildx inspect --bootstrap; }
+	docker buildx inspect | grep 'Driver:' | grep 'docker-container' > /dev/null || { docker buildx create --use --name multiarch-builder; docker buildx inspect --bootstrap; }
