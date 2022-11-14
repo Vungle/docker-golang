@@ -1,5 +1,5 @@
 #!/bin/sh -ex
-ver=`cat .version`-pr-34-test-only
+ver=`cat .version`
 make build PROJECT_IMAGE=vungle/golang:${ver} PUSH_MULTIARCH=true
 
 docker info

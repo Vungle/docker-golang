@@ -16,4 +16,4 @@ deploy:
   provider: script
   script: ./deploy.sh
   on:
-    branch: wip-add-arm-support
+    branch: master
