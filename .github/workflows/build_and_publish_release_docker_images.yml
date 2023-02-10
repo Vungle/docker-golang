@@ -1,0 +1,99 @@
+name: Build and Publish Release Images
+run-name: ${{github.event.pull_request.title}}${{inputs.image_tag}} - PR-${{github.event.pull_request.number}}${{inputs.git_ref}} - ${{github.actor}}
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - '.version'
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        required: true
+        type: string
+        description: Tag for both amd64 and multi-arch. For example, v1.251.0, PR-xxx.
+      git_ref:
+        type: string
+        description: The commit/branch/tag we build for. Keep empty to use default branch.
+
+permissions:
+  id-token: write
+  contents: write
+  # https://stackoverflow.com/questions/72248956/github-action-with-docker-makes-error-exporting-to-image-403-forbidden-error
+  packages: write
+  pull-requests: read
+env:
+  HELM_EXPERIMENTAL_OCI: 1
+
+jobs:
+  build-and-publish:
+    name: Build and Publish Multi-Arch Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Repository Code
+        uses: actions/checkout@v3  # https://github.com/actions/checkout
+        with:
+          ref: ${{inputs.git_ref}} # For master PR, this will be empty string and actions/checkout will use event SHA.
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Setup ssh Agent
+        run: |
+          eval `ssh-agent -s`
+          ssh-add - <<< '${{ secrets.VSL_DOWNLOAD_SSH_KEY }}'
+          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> $GITHUB_ENV
+          echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> $GITHUB_ENV
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and Publish Multi-Arch Images
+        run: |
+          BUILD_SCOPE=$(awk '{print $NF}' _ops/prod/version)
+          if ! [ -z ${{inputs.image_tag}} ]; then BUILD_SCOPE='${{inputs.image_tag}}'; fi
+          echo "BUILD_SCOPE=$BUILD_SCOPE" >> $GITHUB_ENV
+          make build publish PROJECT_IMAGE="vungle/kraken:$BUILD_SCOPE" BUILD_SCOPE="$BUILD_SCOPE"
+#         make publish-multi-arch PROJECT_IMAGE="vungle/kraken-multiarch:$BUILD_SCOPE" BUILD_SCOPE="$BUILD_SCOPE"
+
+#      ## build multi arch and push to AWS ECR
+#      - name: Assume github action role
+#        uses: aws-actions/configure-aws-credentials@v1-node16
+#        with:
+#          role-to-assume: "arn:aws:iam::320005014399:role/github-action"
+#          aws-region: us-east-1
+#          mask-aws-account-id: false
+#          role-session-name: github-action
+#
+#      - name: Check if Github Action role was assumed
+#        shell: bash
+#        run: aws sts get-caller-identity
+#
+#      - name: Assume ecr-push role
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          ### IMPORTANT: must pass over these three, otherwise doesn't work
+#          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+#          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+#          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+#          role-to-assume: "arn:aws:iam::320005014399:role/ecr-push"
+#          # Need to disable since the parent role doesn't have permissions to tag
+#          role-skip-session-tagging: true
+#          # role duration need <= the default when creating role
+#          role-duration-seconds: 3600
+#          aws-region: us-east-1
+#
+#      - name: Check if ECR role was assumed using Github Action role
+#        shell: bash
+#        run: aws sts get-caller-identity
+#
+#      - name: Login to ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v1
+#      - run: echo ${{ steps.login-ecr.outputs.registry }}
+#
+#      - name: Build and Publish Multi-Arch Images To ECR
+#        run: |
+#          make publish-multi-arch BUILD_SCOPE="$BUILD_SCOPE" PROJECT_IMAGE_MULTIARCH="${{ steps.login-ecr.outputs.registry }}/jaeger:$BUILD_SCOPE"
