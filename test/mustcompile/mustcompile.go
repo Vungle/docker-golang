@@ -30,7 +30,7 @@ func verifyGoVersion(version string) error {
 	// Trim the go prefix in the version that is returned.
 	goVer = strings.TrimLeft(goVer, "go")
 
-	if strings.Index(version, goVer) < 0 {
+	if !strings.HasPrefix(goVer, version) {
 		return fmt.Errorf("Go version mismatch, runtime: %s, expected: %s", goVer, version)
 	}
 
