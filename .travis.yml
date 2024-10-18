@@ -29,7 +29,7 @@ before_script:
  - docker --version
 
 script:
-  - make build test
+  - make build test PUSH_MULTIARCH=true
 
 deploy:
   provider: script
