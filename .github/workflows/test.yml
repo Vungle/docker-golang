@@ -1,0 +1,36 @@
+name: Test images
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Build and test
+        run: |
+          make build PUSH_MULTIARCH=true
+  test:
+    needs: build
+    strategy:
+      matrix:
+        runners: [ubuntu-latest, ubuntu-latest-2-core-arm]
+    runs-on: ${{ matrix.runners }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Test
+        run: |
+          make test
