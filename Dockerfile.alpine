@@ -15,7 +15,7 @@ RUN apk add -q --update \
 # these output files can be consumed by other processes. Downstream projects can
 # choose to mount OUTDIR to a volume directly or create a directory and perform
 # `docker cp ...` later.
-ENV OUTDIR /out
+ENV OUTDIR=/out
 
 ##########################
 # Testing and Tooling
