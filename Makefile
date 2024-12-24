@@ -1,5 +1,5 @@
 ifndef BUILD_SCOPE
-BUILD_SCOPE=v1.22.4-dev
+BUILD_SCOPE=v1.23.4-dev
 endif
 
 PROJECT_BASE=vungle/golang
